@@ -1,3 +1,3 @@
 # intercorp-infra
 
-[Diagrama](Untitled Diagram.png)
+![Diagrama](Diagram.png)
