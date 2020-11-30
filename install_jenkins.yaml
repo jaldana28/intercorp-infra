@@ -1,0 +1,53 @@
+---
+- hosts: "{{ passed_in_hosts }}"
+  become: yes
+  remote_user: ec2-user
+  become_user: root
+  tasks:
+    - name: Update all packages
+      yum:
+          name: '*'
+          state: latest
+          update_only: yes
+
+    - name: Install pre-packages
+      yum:
+        name: "{{ packages }}"
+        state: latest
+        update_cache: yes
+      vars:
+        packages:
+          - python-pip
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+          - amazon-linux-extras
+          
+    - name: Add extras repository
+      shell: yum-config-manager --enable extras
+
+    - name: Install docker-ce es
+      shell: "amazon-linux-extras install docker=18.06.1 -y"
+
+    - name: Start Docker Service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+        
+    - name: Pull Docker Jenkins Image
+      docker_image:
+          name: jenkins/jenkins
+          source: pull
+
+    - name: Create Jenkins Container
+      docker_container:
+          name: intercorp-jenkins
+          image: jenkins/jenkins
+          ports:
+            - "8080:8080"
+            - "50000:50000"
+          volumes:
+            - "jenkins_home:/var/jenkins_home"
+            - "/var/run/docker.sock:/var/run/docker.sock"
+          state: started
