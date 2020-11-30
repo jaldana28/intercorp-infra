@@ -23,4 +23,15 @@ variable "arn_certificate" {
   default = "arn:aws:acm:us-east-1:931914722589:certificate/f82d8357-a8d3-4885-9c4c-f98ced31473b"
 }
 
+varible "acess_key" {
+  type    = string
+  default = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+ }
+
+varible "secret_key" {
+  type    = string
+  default = ${{ secrets.AWS_SECRET_SECRET_KEY }}
+ }
+
+
 
