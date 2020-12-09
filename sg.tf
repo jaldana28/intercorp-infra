@@ -47,6 +47,13 @@ resource "aws_security_group" "jenkins-sg" {
     protocol        = "tcp"
     security_groups = [aws_security_group.lb-sg.id]
   }
+  ingress {
+    description     = "allow traffic from LB on port 8081"
+    from_port       = 8081
+    to_port         = 8081
+    protocol        = "tcp"
+    security_groups = [aws_security_group.lb-sg.id]
+  }
   egress {
     from_port   = 0
     to_port     = 0
