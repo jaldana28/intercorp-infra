@@ -1,3 +1,3 @@
 # Intercorp-Infra
 
-![Diagrama](Diagram.png)
+![Diagrama](diagram.png)
