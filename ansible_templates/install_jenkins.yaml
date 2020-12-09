@@ -34,20 +34,26 @@
         name: docker
         state: started
         enabled: yes
-        
+    
+    - name: copy Volume from s3
+      shell: "aws s3 cp s3://jenkins-volume-intercorp/jenkis.zip ."
+
+    - name: unzip volume
+      shell: "unzip jenkis.zip ."
+
     - name: Pull Docker Jenkins Image
       docker_image:
-          name: jenkins/jenkins
+          name: jenkinsci/blueocean
           source: pull
 
     - name: Create Jenkins Container
       docker_container:
           name: intercorp-jenkins
-          image: jenkins/jenkins
+          image: jenkinsci/blueocean
           ports:
             - "8080:8080"
             - "50000:50000"
           volumes:
-            - "jenkins_home:/var/jenkins_home"
+            - "/home/ec2-user/jenkins:/var/jenkins_home"
             - "/var/run/docker.sock:/var/run/docker.sock"
           state: started
